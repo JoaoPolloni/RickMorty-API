@@ -1,83 +1,115 @@
-const urlApi = 'https://rickandmortyapi.com/api/character/';
-const listEl = document.getElementById('list');
+window.onload = async () => {
+    const xhr = new XMLHttpRequest()
+    xhr.open("GET", "https://rickandmortyapi.com/api/character")
+    xhr.send()
+    xhr.responseType = "json"
 
-let CountCharacter = '';
-let nextUrl = '';
-let prevUrl = '';
-let numPages = '';
+    xhr.onload = async () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const response = xhr.response
+            const results = response.results
 
-//Faz busca no campo ID
-//const getCharacters = async (url, id = 'cop') => {
-const getCharacters = async (url, id = '') => {
-    if (id !== '') {
-        var response = await fetch(`${url}?name=${id}`);        
-    } else {
-        var response = await fetch(url);        
-    }
-    
-    const data = await response.json();
+            let personagens = results.map(item => {
+                return {
+                    id: item.id,
+                    name: item.name,
+                    status: item.status,
+                    species: item.species,
+                    gender: item.gender,
+                    origin: item.origin.name,
+                    location: item.location.name,
+                    image: item.image,
+                    episode: item.episode
+                }
+            }).slice(0, 10)
 
-    CountCharacter = data.info.count;
-    nextUrl = data.info.next;
-    prevUrl = data.info.prev;
-    numPages = data.info.pages;    
-    
-    const characters = data.results;
-    render(characters);
+            for (let i = 0; i <= 4; i++) {
+                const personagem = personagens[i]
+                adicionarCardPersonagem(personagem, 'container1')
+            }
 
-    resultPage();
-}
+            for (let i = 5; i <= 9; i++) {
+                const personagem = personagens[i]
+                adicionarCardPersonagem(personagem, 'container2')
+            }
 
+            for await (let personagem of personagens) {
+                adicionarPersonagemATabela(personagem)
+            }
 
-const render = (characters) => {
-    listEl.innerHTML = '';
-    characters.map((character) => {
-        listEl.insertAdjacentHTML('beforeend', `
-    <div class="card">
-      <div class="card-header">
-        <p class="card-title">${character.name}</p>
-      </div>
-      <div class="card-img">
-        <img src="${character.image}" alt="${character.name}"/>
-      </div>
-      <div class="card-body">
-       <p><b>ID:</b> ${character.id}</p>
-       <p><b>Status:</b> ${character.status}</p>
-       <p><b>Gender:</b> ${character.gender}</p>
-      </div>
-    </div>
-    `)
-    })        
+            document.getElementById('btnAdicionar').onclick = async event => {
+                event.preventDefault()
 
-}
-
-const CountPage = () => {
-    getCharacters(CountCharacter);
-}
-const nextPage = () => {
-    getCharacters(nextUrl);
-}
-const prevPage = () => {
-    getCharacters(prevUrl);
-}
-const homePage = () => {
-    getCharacters(urlApi);
-}
-
-const resultPage = () => {     
-    document.getElementById("count").style.display = 'block';
-    document.getElementById("prev").style.display = 'block';
-    document.getElementById("next").style.display = 'block';
-    if (CountCharacter == null) {
-        document.getElementById("count").style.display = 'none';     
-    }
-    if (nextUrl == null) {
-        document.getElementById("next").style.display = 'none';     
-    }
-    if (prevUrl == null) {        
-        document.getElementById("prev").style.display = 'none';
+                const name = document.getElementById('inputName').value
+                const gender = document.getElementById('inputGender').value
+                const episode = document.getElementById('inputEpisode').value
+            
+                if (!name || !gender || !episode)
+                    return alert('Preencha todos os campos')
+            
+            
+                const personagem = {
+                    name: name,
+                    gender: gender,
+                    episode: [episode]
+                }
+            
+                personagens.push(personagem)
+                adicionarPersonagemATabela(personagem)
+            }
+        } else {
+            alert('Erro ao carregar informações da API: ' + xhr.status)
+        }
     }
 }
 
+function adicionarPersonagemATabela(personagem) {
+    const tr = document.createElement('tr')
+    const tdName = document.createElement('td')
+    const tdGender = document.createElement('td')
+    const tdTotalEpisodes = document.createElement('td')
+    const tdEpisodes = document.createElement('td')
+    const tdRule = document.createElement('td')
 
-getCharacters(urlApi);
+    tdName.innerText = personagem.name
+    tdGender.innerText = personagem.gender
+    tdTotalEpisodes.innerText = personagem.episode.length
+    tdRule.innerText = personagem.episode.length >= 7 ? 'Passed' : 'Failed'
+
+    const arrayEpisodios = personagem.episode.slice(0, 5)
+    arrayEpisodios.concat(personagem.episode.slice(-2))
+    tdEpisodes.innerText = arrayEpisodios.join('\n')
+
+    tr.appendChild(tdName)
+    tr.appendChild(tdGender)
+    tr.appendChild(tdTotalEpisodes)
+    tr.appendChild(tdEpisodes)
+    tr.appendChild(tdRule)
+
+    document.getElementById('tabela').appendChild(tr)
+}
+
+function adicionarCardPersonagem(personagem, container) {
+    const div = document.createElement('div')
+    const image = document.createElement('img')
+    const id = document.createElement('h6')
+    const name = document.createElement('h3')
+    const status = document.createElement('h5')
+    const gender = document.createElement('h5')
+
+    div.classList = 'card'
+    image.src = personagem.image
+    image.classList = 'card-image'
+    name.innerText = personagem.name
+    id.innerText = `ID: ${personagem.id}`
+    status.innerText = `Status: ${personagem.status}`
+    gender.innerText = `Gender: ${personagem.gender}`
+
+    div.appendChild(image)
+    div.appendChild(id)
+    div.appendChild(name)
+    div.appendChild(status)
+    div.appendChild(gender)
+
+    document.getElementById(container).appendChild(div)
+}

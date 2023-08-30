@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Get Schwifty';
+    src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3089507/get-schwifty.woff') format('woff');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,71 +12,53 @@
 
 body {
     font-size: 100%;
-    background-color: #000;
+    background-color: black;
+    color: white;
+    text-align: center;
     font-family: cursive;
 }
-/*Alinhar header com o centro*/
-header { 
-    text-align: center;   
-    position: fixed;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;    
-    background-color: rgba(0, 0, 0, 0.726);
-    color: aliceblue;
+
+table {
+    width: 100%;
+}
+
+th, td, tr {
+    border: 1px green solid;
+}
+
+td {
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .container {
     max-width: 1100px;
     margin: auto;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    margin-bottom: 15px;
 }
 
-.list{
-    margin-top: 80px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
+.card-image {
+    width: 80%;
+}
+
+h6 {
+    margin: 0
+}
+
+h3 {
+    margin: 0
+}
+
+h5 {
+    margin: 0
 }
 
 .card {
-    width: 23%;
-    margin: 0.5rem;
     background-color: #66BA4F;
-    border-radius: 10px;
-    color: #000;
-}
-
-.card-header {
-    color: whitesmoke;
-    padding: 1rem;
-    min-height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-header .card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    font-family: 'Get Schwifty';
-}
-.card-img img {
-    width: 100%;
-    height: auto;
-}
-.card-body {
-    color: whitesmoke;
-    padding: 1rem;
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-.card-body p {
-    font-size: 1.2rem;
+    padding: 5px 5px 5px 5px;
+    border: 2px green solid;
+    border-radius: 5px;
+    margin-right: 15px;
 }

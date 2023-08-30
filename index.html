@@ -1,23 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
+  <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>API Rick and Morty</title>
     <link rel="stylesheet" href="src/css/style.css">
-    <title>Prova Bussola</title>
-</head>
-
-<body>
-    <header>
-        <h1>Rick And Morty Characters</h1>
-    </header>
-    <main class="container">           
-        <section class="list" id="list">
-        </section>        
-        
-    </main>
+  </head>
+  <body>
     <script src="src/js/scripts.js"></script>
-</body>
+    
+    <h1>Rick and Morty Characters</h1>
+    <br>
+    <div id="container1" class="container"></div>
+    <div id="container2" class="container"></div>
+
+    <br>
+
+    <h2>Add Character</h2>
+    <input id="inputName" type="text" placeholder="Name">
+    <select id="inputGender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select>
+    <input id="inputEpisode" type="number" placeholder="Episode">
+    <button id="btnAdicionar">Add Character</button>
+
+    <br>
+
+    <h2>Character Table</h5>
+    <table id="tabela">
+        <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Total episodes</th>
+            <th>Episode list</th>
+            <th>Rule</th>
+        </tr>
+    </table>
+  </body>
 </html>
